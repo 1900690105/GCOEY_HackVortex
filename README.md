@@ -34,6 +34,7 @@ The job market today is plagued by a widening skill gap. Over 20 lakh B.Tech gra
 
 - ✅ Ikigai-Based Role Selection
 - ✅ Real-Time Resume & Feedback Analysis
+- ✅ Support Multiple Language During Learing in courses section
 - ✅ Mock Interview & Coding Rounds
 - ✅ Gamification with Badges & Rewards
 - ✅ Industry-Specific Learning Paths
