@@ -85,7 +85,7 @@ The job market today is plagued by a widening skill gap. Over 20 lakh B.Tech gra
 3. **Environment Variables Setup**
    - Ensure Node.js is installed
    - Set up environment variables (`.env`)
-      -NEXT_PUBLIC_GEMINI_API_KEY
+      -NEXT_PUBLIC_GEMINI_API_KEY,
       -NEXT_PUBLIC_YOUTUBE_API_KEY
 
 
