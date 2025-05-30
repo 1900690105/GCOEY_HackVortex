@@ -56,18 +56,6 @@ The job market today is plagued by a widening skill gap. Over 20 lakh B.Tech gra
 
 ---
 
-## 🖼 Screenshots
-
-> Add screenshots of the following pages in your project directory:
-- 📌 Dashboard
-- 📌 Role Selection via Ikigai
-- 📌 Roadmap Visualization
-- 📌 Course/Project Module
-- 📌 Resume Analyzer
-- 📌 Company Dashboard
-
----
-
 ## 🚀 Run Instructions
 
 1. **Clone the repository**
