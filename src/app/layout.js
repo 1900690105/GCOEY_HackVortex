@@ -1,9 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import FocusTimer from "./course/start/components/FocusTimer";
-import HomeNavigationIcon from "./course/start/components/GoBack";
-import ChatBot from "./jobPreparation/components/ChatBot";
-import NavBar from "./components/NavBar";
+import Header from "./home/components/Header";
+import Footer from "./home/components/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -17,8 +15,8 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "Ai Powered career coach",
-  description: "ideathon hackthon",
+  title: "AI Powered Career Coach",
+  description: "Ai Powerd job Preparation Platform",
 };
 
 export default function RootLayout({ children }) {
@@ -27,9 +25,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NavBar />
-
+        <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );

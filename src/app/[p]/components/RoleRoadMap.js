@@ -3,11 +3,10 @@ import { useEffect, useState } from "react";
 import LoadingDialog from "../../jobPreparation/components/LoadingDialog";
 import {
   AiGenerateRollRoadmap,
-  AiHackRoadmap,
+  AiPreRole,
 } from "../../../../config/AllAiModels";
 import StudentRoadMap from "../../[p]/components/RoadMap";
-import RoadMap from "@/app/components/RoadMap";
-import SoftwareDevelopmentGrid from "@/app/components/RoadMap";
+import Precourse from "./Precourse";
 
 export default function RoleRoadMap() {
   const [inputValue, setInputValue] = useState("");
@@ -17,6 +16,7 @@ export default function RoleRoadMap() {
   const [roadmap, setRoadmap] = useState("");
   const [branch, setBranch] = useState("");
   const [level, setLevel] = useState("");
+  const [pre, setPre] = useState("");
 
   useEffect(() => {
     const role = localStorage.getItem("role");
@@ -27,28 +27,44 @@ export default function RoleRoadMap() {
 
   useEffect(() => {
     const local = localStorage.getItem("roadmap");
+    const precourse = localStorage.getItem("precourse");
     if (local) {
       setTree(true);
+    }
+    if (precourse) {
+      setPre(JSON.parse(precourse));
     }
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const BASIC_PROMPT = `generate Simple, Focused, Progressive, and Outcome-Oriented roadmap for ${inputValue} of level ${level} of branch ${branch}, include stages, topic, subtopics, time required, skill required to master.in json formate.`;
+    const BASIC_PROMPT = `generate Simple,Focused,Progressive, and Outcome-Oriented roadmap for ${inputValue} of branch ${branch},include introducation,goal,objective,stages,topic,subtopics,time required,real worldprojects,challenges,resources,skill required to master.in json formate.`;
     try {
-      const result = await AiHackRoadmap.sendMessage(BASIC_PROMPT);
+      const result = await AiGenerateRollRoadmap.sendMessage(BASIC_PROMPT);
       const responseText = await result.response.text();
       const parsedResult = JSON.parse(responseText);
       setSubmittedValue(parsedResult);
       localStorage.setItem("roadmap", JSON.stringify(parsedResult));
       console.log(responseText);
-      setTree(true);
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+    }
+
+    const prompt = `give me list of things i want know about befor start courses in "${inputValue}".include .in json formate.`;
+    try {
+      const result = await AiPreRole.sendMessage(prompt);
+      const responseText = await result.response.text();
+      const parsedResult = JSON.parse(responseText);
+      console.log(parsedResult);
+      setPre(parsedResult);
+      localStorage.setItem("precourse", JSON.stringify(parsedResult));
     } catch (error) {
       console.error("Error parsing JSON:", error);
     } finally {
       setLoading(false);
     }
+    setTree(true);
   };
 
   return (
@@ -58,7 +74,7 @@ export default function RoleRoadMap() {
         className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md mt-8"
       >
         <h1 className="text-2xl font-semibold text-center text-gray-800 mb-6">
-          Generate Your Roadmap
+          Find Your Best Roadmap
         </h1>
         <div className="mb-6">
           <div className="mb-2">
@@ -66,7 +82,7 @@ export default function RoleRoadMap() {
               htmlFor="userInput"
               className="block text-gray-600 text-sm font-medium mb-2"
             >
-              Topic:
+              Just Give Me Your Role:
             </label>
             <input
               type="text"
@@ -96,15 +112,15 @@ export default function RoleRoadMap() {
           }`}
           disabled={loading}
         >
-          {loading ? "Generating..." : "Go for Roadmap"}
+          {loading ? "Generating..." : "Check Out"}
         </button>
       </form>
       {loading && <LoadingDialog loading={loading} />}
 
       {tree && (
         <div className="mt-8 w-full max-w-4xl">
-          {/* <StudentRoadMap roadmap={submittedValue} setTree={setTree} /> */}
-          <RoadMap roadmap={submittedValue} setTree={setTree} />
+          {pre && <Precourse pre={pre} inputValue={inputValue} />}
+          <StudentRoadMap roadmap={submittedValue} setTree={setTree} />
         </div>
       )}
     </div>

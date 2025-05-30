@@ -8,16 +8,19 @@ import ProgressSteps from "./components/ProgressStep";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowRight, ArrowLeft } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const CreateCoursePage = () => {
   const [activeStep, setActiveStep] = useState(1);
   const [content, setContent] = useState();
-  const localStorageContent = localStorage.getItem("content");
+  const [localStorageContent, setLocalStorageContent] = useState();
 
   useEffect(() => {
     if (localStorageContent) {
       setContent(JSON.parse(localStorageContent));
+    }
+    if (content) {
+      setLocalStorageContent(JSON.stringify(content));
     }
   }, []);
 

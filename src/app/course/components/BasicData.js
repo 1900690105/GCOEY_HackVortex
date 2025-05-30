@@ -23,6 +23,7 @@ function BasicData({ activeStep, handleBack, handleNext, setContent }) {
     chapters: "",
     category: "",
     difficulty: "",
+    video_language: "",
   });
 
   const [isCustomCategory, setIsCustomCategory] = useState(false);
@@ -32,26 +33,7 @@ function BasicData({ activeStep, handleBack, handleNext, setContent }) {
   const isFormValid = Object.values(formData).every(
     (value) => value.trim() !== ""
   );
-  useEffect(() => {
-    const role = searchParams?.get("role") || "computer engineering";
-    const role2 = searchParams.get("course");
-    const chapter = searchParams.get("chapter") || "6";
 
-    const coursetitle = searchParams?.get("course") + " for " + role;
-    if (coursetitle && role && chapter) {
-      setFormData({
-        ...formData,
-        topicName: coursetitle,
-        chapters: chapter,
-      });
-    }
-    if (role2) {
-      setFormData({
-        ...formData,
-        topicName: coursetitle,
-      });
-    }
-  }, []);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -59,6 +41,7 @@ function BasicData({ activeStep, handleBack, handleNext, setContent }) {
 
   const handleNextStep = async () => {
     localStorage.setItem("category", formData.category);
+    localStorage.setItem("formData", JSON.stringify(formData));
     localStorage.setItem("topicName", formData.topicName);
     setLoading(true);
     const Basic_PROMPT = `category:${formData.category},topic:${formData.topicName},level:${formData.difficulty},noofchapater:${formData.chapters}.generate a course tutorial on the basic of give data,include coursename:name of course.description:short description.chapater:name of chapater.about:about the chapater.duration:time required to complete.in json formate.`;
@@ -221,6 +204,39 @@ function BasicData({ activeStep, handleBack, handleNext, setContent }) {
                     formData.difficulty == "Advanced") && (
                     <Button className="mt-3">Check</Button>
                   )}
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Video Language
+                </label>
+                <div className="relative">
+                  <GraduationCap className="absolute left-3 top-3 h-5 w-5 text-blue-500" />
+                  <select
+                    name="video_language"
+                    value={formData.video_language}
+                    onChange={handleChange}
+                    title="Eg.marathi,hindi, english,tamil, telugu etc.."
+                    className="w-full pl-10 pr-4 py-2 border border-blue-100 rounded-md focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  >
+                    <option value="">Select Language</option>
+                    {[
+                      "Hindi",
+                      "Marathi",
+                      "Telugu",
+                      "Tamil",
+                      "English",
+                      "Gujarati",
+                      "Kannada",
+                      "Odia",
+                      "Malayalam",
+                    ].map((level) => (
+                      <option key={level} value={level.toLowerCase()}>
+                        {level}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </div>

@@ -45,6 +45,7 @@ export default function DepartmentJobRoles() {
     try {
       const result = await JobRolls.sendMessage(BASIC_PROMPT);
       const responseText = await result.response.text();
+      // console.log("Response Text: ", responseText);
       const parsedResult = JSON.parse(responseText);
       localStorage.setItem("jobs", JSON.stringify(parsedResult));
       localStorage.setItem("branch", inputValue);
@@ -52,6 +53,7 @@ export default function DepartmentJobRoles() {
       setTree(true);
       window.location.reload();
     } catch (error) {
+      // console.error("Error parsing JSON:", error);
       alert("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
@@ -84,7 +86,7 @@ export default function DepartmentJobRoles() {
         className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md mt-5"
       >
         <h1 className="text-2xl font-semibold text-center text-gray-800 mb-6">
-          View Job Roles
+          Find your dream Job Roles
         </h1>
         <div className="mb-6">
           <label
@@ -96,11 +98,12 @@ export default function DepartmentJobRoles() {
           <select
             id="branchSelect"
             value={selectedBranch}
+            title="Select Branch"
             onChange={(e) => setSelectedBranch(e.target.value)}
             className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
           >
             <option value="" disabled>
-              Select your department...
+              I am from...
             </option>
             <option value="Computer engineering">Computer Engineering</option>
             <option value="Electrical engineering">
@@ -138,6 +141,7 @@ export default function DepartmentJobRoles() {
         )}
         <Button
           type="submit"
+          title="click here generate"
           className={`w-full py-3 rounded-lg text-white font-semibold transition duration-200 ${
             loading
               ? "bg-blue-400 cursor-not-allowed"
@@ -145,14 +149,14 @@ export default function DepartmentJobRoles() {
           }`}
           disabled={loading}
         >
-          {loading ? "Generating..." : "Get Job Roles"}
+          {loading ? "Generating..." : "Let's Check"}
         </Button>
       </form>
-      {!tree && (
+      {/* {!tree && (
         <div className="text-center text-gray-600 text-sm font-medium mt-6">
           <Image src={"/department.png"} alt="tree" width={300} height={300} />
         </div>
-      )}
+      )} */}
       {loading && <LoadingDialog loading={loading} />}
       {tree && (
         <>
@@ -162,7 +166,7 @@ export default function DepartmentJobRoles() {
 
       <AlertDialog open={conform}>
         <AlertDialogContent>
-          Do You want to continue or Want More Info About this Role?
+          Do You want to continue or Want More Info About this?
           <AlertDialogFooter>
             <AlertDialogCancel
               onClick={() => setConform(false)}
@@ -184,10 +188,8 @@ export default function DepartmentJobRoles() {
                   handleMoreInfo();
                 }}
                 disabled={status}
-                className="mt-2"
-                title="know more infomation about this role"
               >
-                {status ? "Generating..." : "Know More"}
+                {status ? "Generating..." : "More Info"}
               </Button>
             )}
             <AlertDialogAction
@@ -196,7 +198,7 @@ export default function DepartmentJobRoles() {
               }}
               disabled={status}
             >
-              RoadMap
+              Continue
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

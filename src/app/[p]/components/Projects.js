@@ -5,7 +5,6 @@ import { AiProjectIdea } from "../../../../config/AllAiModels";
 import ProjectIdeas from "./GenerateProjectPlan";
 import LoadingDialog from "../../jobPreparation/components/LoadingDialog";
 import { FaArrowRight } from "react-icons/fa";
-import ProjectCollaboration from "./ProjectCollaboration";
 const Projects = () => {
   const [check, setCheck] = useState(true);
   const [projects, setProjects] = useState("");
@@ -161,7 +160,6 @@ const Projects = () => {
                         >
                           Start {level} Project
                         </Button>
-                        <p className="text-gray-600 mt-4">OR</p>
                       </>
                     )}
                   </div>
@@ -178,8 +176,6 @@ const Projects = () => {
           topicName={topicName}
         />
       )}
-      <ProjectCollaboration />
-
       <LoadingDialog loading={loadings} />
     </>
   );

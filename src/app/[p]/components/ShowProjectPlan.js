@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Card,
   CardHeader,
@@ -13,10 +13,17 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Upload } from "lucide-react";
 
 const Project_plan = ({ setPlanStatus, setCheck }) => {
   const [activeDay, setActiveDay] = useState(null);
   const [plan, setPlan] = useState("");
+  const [verify, setVerify] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+  const fileInputRef = useRef(null);
+
   useEffect(() => {
     const plan = localStorage.getItem("project_plan");
     if (plan) {
@@ -25,7 +32,45 @@ const Project_plan = ({ setPlanStatus, setCheck }) => {
       alert("Project Completed");
     }
     console.log(plan);
-  });
+  }, []);
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Check if file is a ZIP
+    if (file.type !== "application/zip" && !file.name.endsWith(".zip")) {
+      setUploadError("Please upload a ZIP file");
+      return;
+    }
+
+    setIsUploading(true);
+    setUploadError("");
+
+    // Simulate file upload process
+    setTimeout(() => {
+      setIsUploading(false);
+      setUploadSuccess(true);
+      setUploadError("");
+    }, 1500);
+  };
+
+  const triggerFileUpload = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleProjectCompletion = () => {
+    const levelNumber = localStorage.getItem("levelNumber");
+    if (levelNumber != null) {
+      const level = parseInt(levelNumber, 10) + 1;
+      localStorage.setItem("levelNumber", level);
+    }
+    setPlanStatus(false);
+    localStorage.removeItem("project_plan");
+    setCheck(true);
+    localStorage.removeItem("projects");
+    window.location.reload();
+  };
 
   return (
     <div className="min-h-screen bg-blue-50 p-4 sm:p-8">
@@ -96,28 +141,77 @@ const Project_plan = ({ setPlanStatus, setCheck }) => {
             </Accordion>
           </CardContent>
 
-          <CardFooter className="bg-blue-50 p-4 sm:p-6 flex justify-between items-center">
+          <CardFooter className="bg-blue-50 p-4 sm:p-6 flex flex-col sm:flex-row gap-4 items-center">
             <p className="text-sm text-blue-800 italic">
               Project Management Tracker
             </p>
-            <Button
-              variant="outline"
-              className="border-blue-600 text-blue-600 hover:bg-blue-100"
-              onClick={() => {
-                const levelNumber = localStorage.getItem("levelNumber");
-                if (levelNumber != null) {
-                  const level = parseInt(levelNumber, 10) + 1;
-                  localStorage.setItem("levelNumber", level);
-                }
-                setPlanStatus(false);
-                localStorage.removeItem("project_plan");
-                setCheck(true);
-                localStorage.removeItem("projects");
-                window.location.reload();
-              }}
-            >
-              Completed
-            </Button>
+
+            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto sm:ml-auto">
+              {/* Hidden file input */}
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileUpload}
+                accept=".zip"
+                className="hidden"
+              />
+
+              {/* Show upload button or status */}
+              {!uploadSuccess ? (
+                <Button
+                  onClick={triggerFileUpload}
+                  className="bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-2"
+                  disabled={isUploading}
+                >
+                  <Upload size={16} />
+                  {isUploading ? "Uploading..." : "Submit your Project"}
+                </Button>
+              ) : (
+                <div className="flex items-center gap-2 text-green-600">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                  Project uploaded successfully
+                </div>
+              )}
+
+              {/* Error message */}
+              {uploadError && (
+                <p className="text-red-500 text-sm">{uploadError}</p>
+              )}
+
+              {/* Verify/Complete button */}
+              {(verify || uploadSuccess) && (
+                <Button
+                  variant="outline"
+                  className="border-blue-600 text-blue-600 hover:bg-blue-100"
+                  onClick={handleProjectCompletion}
+                >
+                  Complete Project
+                </Button>
+              )}
+
+              {/* Show verify button if not yet verified */}
+              {!verify && !uploadSuccess && (
+                <Button
+                  onClick={() => setVerify(true)}
+                  className="bg-blue-600 text-white hover:bg-blue-700"
+                >
+                  Verify Completion
+                </Button>
+              )}
+            </div>
           </CardFooter>
         </Card>
       </div>

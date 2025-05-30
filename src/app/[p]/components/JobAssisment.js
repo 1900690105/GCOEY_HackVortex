@@ -34,6 +34,47 @@ export default function JobAssessment() {
       options: ["Queue", "Stack", "Linked List", "Tree"],
       correctAnswer: 1,
     },
+    {
+      question: "What is the default port for HTTP?",
+      options: ["80", "443", "21", "8080"],
+      correctAnswer: 0,
+    },
+    {
+      question: "Which tag is used to define an unordered list in HTML?",
+      options: ["<ul>", "<ol>", "<li>", "<list>"],
+      correctAnswer: 0,
+    },
+    {
+      question: "Which HTTP method is used to update a resource?",
+      options: ["GET", "POST", "PUT", "DELETE"],
+      correctAnswer: 2,
+    },
+    {
+      question: "In JavaScript, which keyword is used to declare a constant?",
+      options: ["var", "let", "const", "define"],
+      correctAnswer: 2,
+    },
+    {
+      question: "Which of the following is a NoSQL database?",
+      options: ["MySQL", "PostgreSQL", "MongoDB", "Oracle"],
+      correctAnswer: 2,
+    },
+    {
+      question: "Which of the following is used to style a web page?",
+      options: ["HTML", "CSS", "JavaScript", "SQL"],
+      correctAnswer: 1,
+    },
+    {
+      question:
+        "What does the ‘this’ keyword refer to in a JavaScript object method?",
+      options: [
+        "The global object",
+        "The parent function",
+        "The current object",
+        "Undefined",
+      ],
+      correctAnswer: 2,
+    },
   ];
 
   useEffect(() => {

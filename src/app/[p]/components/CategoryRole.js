@@ -3,13 +3,14 @@ import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Briefcase, ChevronRight, ArrowLeft, BookOpen } from "lucide-react";
+import { Briefcase, ChevronRight, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 const JobsRole = ({ setConform, setRole }) => {
   const [loading, setLoading] = useState(true);
   const [skills, setSkills] = useState(null);
   const [jobRoll, setJobRoll] = useState(null);
+  // const [roadmap, setroadmap] = useState(false);
 
   useEffect(() => {
     const jobs = localStorage.getItem("jobs");
@@ -66,7 +67,7 @@ const JobsRole = ({ setConform, setRole }) => {
           </p>
         </CardHeader>
         <CardContent className="p-8 mt-5">
-          {skills.jobRoles.map((role, index) => (
+          {skills?.jobRoles?.map((role, index) => (
             <div key={index} value={role.category}>
               <p className="text-xl font-bold mb-2 text-blue-600 mt-5">
                 {index + 1} .{role.category || ""}
@@ -98,40 +99,6 @@ const JobsRole = ({ setConform, setRole }) => {
             className="mt-5 p-5 space-x-4 w-1/2"
             placeholder="Add missing roles"
           />
-          <p className="mt-10">
-            Befor start to know about computer branch and other information
-            about the computer engineering do this!!!
-          </p>
-          <div className="hidden md:block mt-5">
-            <Card className="p-6 bg-white shadow-xl rounded-xl">
-              <div className="flex items-center space-x-4 mb-4">
-                <BookOpen size={32} className="text-blue-600" />
-                <h3 className="text-xl font-bold text-gray-800">
-                  Learning Insight
-                </h3>
-              </div>
-              <blockquote className="italic text-gray-600 mb-4">
-                "It is important to view knowledge as sort of a semantic
-                tree—make sure you understand the fundamental principles, the
-                trunk and big branches, before you get into the leaves/details
-                or there is nothing for them to hang on to."
-              </blockquote>
-              <div className="text-right">
-                <span className="font-semibold text-gray-700">- Elon Musk</span>
-              </div>
-              <Button
-                variant="outline"
-                onClick={() =>
-                  (window.location.href = `course?course=${encodeURIComponent(
-                    "programming fundamentals"
-                  )}&chapter=${encodeURIComponent("7")}`)
-                }
-                className="w-full mt-4 text-blue-600 hover:bg-blue-50"
-              >
-                Explore Fundamentals
-              </Button>
-            </Card>
-          </div>
         </CardContent>
       </Card>
     </div>

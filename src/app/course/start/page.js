@@ -29,9 +29,7 @@ import LetStart from "./components/LetStart";
 import { handleSpeak, handleStop } from "@/app/components/Speach";
 import Doubt from "./components/Doubt";
 import ShowDoubt from "./components/ShowDoubt";
-import SelectionPage from "./components/SelectedArea";
 import FixBug from "./components/FixBug";
-import Check from "./components/Check";
 
 const CoursePage = () => {
   const [name, setName] = useState("");
@@ -100,7 +98,14 @@ const CoursePage = () => {
     code: false,
   });
   const [code, setCode] = useState("");
-  const language = "marathi";
+  const [language, setLanguage] = useState("");
+
+  useEffect(() => {
+    const formData = JSON.parse(localStorage.getItem("formData"));
+    if (formData) {
+      setLanguage(formData.video_language);
+    }
+  }, []);
 
   const {
     error,
@@ -193,7 +198,7 @@ const CoursePage = () => {
   }, []);
 
   const takeExam = async (chapterName) => {
-    console.log(chapterName); // Use the parameter instead of state
+    console.log(chapterName);
     setLoading((prevState) => ({
       ...prevState,
       exam: true,
@@ -413,7 +418,7 @@ const CoursePage = () => {
             {topicName} Course
           </h1>
           <p className="mt-2 text-blue-100">
-            Master the fundamentals of {topicName}
+            Master the fundamentals of {topicName} in {language}
           </p>
         </div>
       </header>
@@ -567,7 +572,7 @@ const CoursePage = () => {
                     </CardHeader>
                     <CardContent>
                       <div className="flex gap-2">
-                        {section.text && (
+                        {/* {section.text && (
                           <div className="cursor-pointer">
                             {play && currentPlay == index ? (
                               <GiSpeakerOff
@@ -613,7 +618,7 @@ const CoursePage = () => {
                               </div>
                             </div>
                           </div>
-                        )}
+                        )} */}
                         <p className={`${font[fontValue]} text-justify`}>
                           {section.text}
                         </p>
@@ -625,86 +630,88 @@ const CoursePage = () => {
                           <code>{section?.code}</code>
                         </pre>
                       )}
+
                       {/* Responsive Button Container */}
                       {section.text && (
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-5 md:items-center">
-                          {/* Translate Button */}
-                          <Button
-                            className="w-full bg-[#003F87] text-white"
-                            onClick={() => handleTranslate(index)}
-                            disabled={loading.translate}
-                          >
-                            {loading.translate && translateIndex == index
-                              ? "Loading..."
-                              : "Translate 🔄"}
-                          </Button>
+                        <div>
+                          {translate && translateIndex == index && (
+                            <div className="mt-5 p-2 border border-blue-500 rounded-lg">
+                              <p className="text-gray-600 text-justify">
+                                {translate[language]}
+                              </p>
+                            </div>
+                          )}
 
-                          {/* Expand Content Button */}
-                          {expandChapter !== activeChapter &&
-                            expandindex != index && (
-                              <Button
-                                className="w-full"
-                                onClick={() =>
-                                  handleExpandChapter(topicName, index)
-                                }
-                                title="Click to know more about"
-                                disabled={loading.chapter}
-                              >
-                                {loading.chapter
-                                  ? "Loading..."
-                                  : "Expand Content ↔️"}
-                              </Button>
-                            )}
-                          {/* Conditional Expand Content Handling */}
-                          {expandChapter == activeChapter &&
-                            expandindex == index && (
-                              <div className="mt-2 text-center">
-                                {expandindex === index &&
-                                expandContent !== "" &&
-                                expandChapter == activeChapter &&
-                                exp ? (
-                                  <Button
-                                    className="w-full"
-                                    onClick={() => setExp(false)}
-                                    title="Click to Hide"
-                                  >
-                                    Hide Content
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    className="w-full"
-                                    onClick={() => {
-                                      setExpandindex(index);
-                                      setExp(true);
-                                    }}
-                                    title="Click to View"
-                                  >
-                                    View Content
-                                  </Button>
-                                )}
-                              </div>
-                            )}
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-5 md:items-center">
+                            {/* Translate Button */}
+                            <Button
+                              className="w-full bg-[#003F87] text-white"
+                              onClick={() => handleTranslate(index)}
+                              disabled={loading.translate}
+                            >
+                              {loading.translate && translateIndex == index
+                                ? "Loading..."
+                                : "Translate 🔄"}
+                            </Button>
 
-                          {/* Start/View Content Button */}
-                          <Button
-                            className="w-full bg-blue-500 hover:bg-blue-600 text-white"
-                            onClick={() => {
-                              setStart(true);
-                              setText(section.text);
-                              setHeading(section.heading);
-                            }}
-                          >
-                            Let's प्रारम्भ (Start) 🚀
-                          </Button>
-                        </div>
-                      )}
+                            {/* Expand Content Button */}
+                            {expandChapter !== activeChapter &&
+                              expandindex != index && (
+                                <Button
+                                  className="w-full"
+                                  onClick={() =>
+                                    handleExpandChapter(topicName, index)
+                                  }
+                                  title="Click to know more about"
+                                  disabled={loading.chapter}
+                                >
+                                  {loading.chapter
+                                    ? "Loading..."
+                                    : "Expand Content ↔️"}
+                                </Button>
+                              )}
+                            {/* Conditional Expand Content Handling */}
+                            {expandChapter == activeChapter &&
+                              expandindex == index && (
+                                <div className="mt-2 text-center">
+                                  {expandindex === index &&
+                                  expandContent !== "" &&
+                                  expandChapter == activeChapter &&
+                                  exp ? (
+                                    <Button
+                                      className="w-full"
+                                      onClick={() => setExp(false)}
+                                      title="Click to Hide"
+                                    >
+                                      Hide Content
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      className="w-full"
+                                      onClick={() => {
+                                        setExpandindex(index);
+                                        setExp(true);
+                                      }}
+                                      title="Click to View"
+                                    >
+                                      View Content
+                                    </Button>
+                                  )}
+                                </div>
+                              )}
 
-                      {/* Translation Section */}
-                      {translate && translateIndex == index && (
-                        <div className="mt-5 p-2 border border-blue-500 rounded-lg">
-                          <p className="text-gray-600 text-justify">
-                            {translate.marathi}
-                          </p>
+                            {/* Start/View Content Button */}
+                            <Button
+                              className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+                              onClick={() => {
+                                setStart(true);
+                                setText(section.text);
+                                setHeading(section.heading);
+                              }}
+                            >
+                              Let's प्रारम्भ (Start) 🚀
+                            </Button>
+                          </div>
                         </div>
                       )}
 

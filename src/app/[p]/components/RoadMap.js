@@ -10,14 +10,145 @@ import {
   Book,
   ChevronRight,
   ArrowLeft,
+  Download,
+  FileText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const StudentRoadMap = ({ setTree }) => {
   const roadmap = JSON.parse(localStorage.getItem("roadmap"));
+  const role = localStorage.getItem("role");
+
+  const handleDownloadRoadmapPDF = () => {
+    const doc = new jsPDF();
+    const fileName = `${roadmap.title
+      .replace(/\s+/g, "-")
+      .toLowerCase()}-roadmap.pdf`;
+
+    doc.setFontSize(20);
+    doc.text(roadmap.title, 105, 20, { align: "center" });
+
+    doc.setFontSize(12);
+    doc.text("Introduction:", 20, 35);
+
+    const splitIntro = doc.splitTextToSize(roadmap.introduction, 170);
+    doc.text(splitIntro, 20, 45);
+
+    let yPosition = 45 + splitIntro.length * 7;
+    doc.setFontSize(16);
+    doc.text("Learning Goal", 20, yPosition);
+    yPosition += 10;
+
+    doc.setFontSize(12);
+    const splitGoal = doc.splitTextToSize(roadmap.goal, 170);
+    doc.text(splitGoal, 20, yPosition);
+
+    yPosition += splitGoal.length * 7 + 10;
+    doc.setFontSize(16);
+    doc.text("Key Objectives", 20, yPosition);
+    yPosition += 10;
+
+    doc.setFontSize(12);
+    roadmap.objectives.forEach((objective, index) => {
+      const objectiveText = `${index + 1}. ${objective}`;
+      const splitObjective = doc.splitTextToSize(objectiveText, 160);
+      doc.text(splitObjective, 20, yPosition);
+      yPosition += splitObjective.length * 7;
+    });
+
+    yPosition += 10;
+    doc.setFontSize(18);
+    doc.text("Learning Journey", 105, yPosition, { align: "center" });
+    yPosition += 10;
+
+    roadmap.stages.forEach((stage, index) => {
+      if (yPosition > 250) {
+        doc.addPage();
+        yPosition = 20;
+      }
+
+      doc.setFontSize(16);
+      doc.text(`Stage ${stage.stage}: ${stage.topic}`, 20, yPosition);
+      yPosition += 8;
+
+      doc.setFontSize(10);
+      doc.text(`Duration: ${stage.timeRequired}`, 20, yPosition);
+      yPosition += 8;
+
+      doc.setFontSize(12);
+      doc.text("Learning Modules:", 20, yPosition);
+      yPosition += 6;
+
+      stage.subtopics.forEach((subtopic, idx) => {
+        doc.text(`• ${subtopic}`, 25, yPosition);
+        yPosition += 6;
+      });
+
+      if (yPosition > 250) {
+        doc.addPage();
+        yPosition = 20;
+      }
+
+      yPosition += 4;
+      doc.text("Real World Projects:", 20, yPosition);
+      yPosition += 6;
+
+      stage.realWorldProjects.forEach((project, idx) => {
+        const splitProject = doc.splitTextToSize(`• ${project}`, 165);
+        doc.text(splitProject, 25, yPosition);
+        yPosition += splitProject.length * 6;
+      });
+
+      if (yPosition > 250) {
+        doc.addPage();
+        yPosition = 20;
+      }
+
+      yPosition += 4;
+      doc.text("Learning Resources:", 20, yPosition);
+      yPosition += 6;
+
+      stage.resources.forEach((resource, idx) => {
+        const splitResource = doc.splitTextToSize(`• ${resource}`, 165);
+        doc.text(splitResource, 25, yPosition);
+        yPosition += splitResource.length * 6;
+      });
+
+      if (yPosition > 250) {
+        doc.addPage();
+        yPosition = 20;
+      }
+
+      yPosition += 4;
+      doc.text("Required Skills:", 20, yPosition);
+      yPosition += 6;
+
+      let skillsText = stage.skillsRequired.join(", ");
+      const splitSkills = doc.splitTextToSize(skillsText, 165);
+      doc.text(splitSkills, 25, yPosition);
+      yPosition += splitSkills.length * 6;
+
+      if (yPosition > 250) {
+        doc.addPage();
+        yPosition = 20;
+      }
+
+      yPosition += 4;
+      doc.text("Challenges:", 20, yPosition);
+      yPosition += 6;
+
+      const splitChallenges = doc.splitTextToSize(stage.challenges, 165);
+      doc.text(splitChallenges, 25, yPosition);
+      yPosition += splitChallenges.length * 6 + 15;
+    });
+
+    doc.save(fileName);
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-4 md:p-8 mt-10">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Header Section with improved visual hierarchy */}
         <div className="text-center space-y-4">
@@ -27,6 +158,17 @@ const StudentRoadMap = ({ setTree }) => {
           <p className="text-lg text-blue-700 max-w-2xl mx-auto">
             {roadmap.introduction}
           </p>
+
+          {/* Download Buttons */}
+          <div className="flex justify-center space-x-4 mt-4">
+            <Button
+              onClick={handleDownloadRoadmapPDF}
+              className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
+            >
+              <FileText className="h-4 w-4" />
+              Download PDF
+            </Button>
+          </div>
         </div>
 
         {/* Goal and Objectives in a grid */}
@@ -52,7 +194,7 @@ const StudentRoadMap = ({ setTree }) => {
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">
-                {roadmap.objectives.map((objective, index) => (
+                {roadmap?.objectives?.map((objective, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <div className="h-6 w-6 flex-shrink-0 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm font-medium">
                       {index + 1}
@@ -101,13 +243,13 @@ const StudentRoadMap = ({ setTree }) => {
                     Learning Modules
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                    {stage.subtopics.map((subtopic, idx) => (
+                    {stage?.subtopics?.map((subtopic, idx) => (
                       <button
                         key={idx}
                         onClick={() => {
                           window.location.href = `course?course=${encodeURIComponent(
                             subtopic
-                          )}&role=${encodeURIComponent(roadmap.title)}`;
+                          )}&role=${encodeURIComponent(role)}`;
                         }}
                         className="flex items-center justify-between p-3 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg transition-colors duration-200"
                       >
@@ -125,7 +267,7 @@ const StudentRoadMap = ({ setTree }) => {
                       Real World Projects
                     </h3>
                     <ul className="space-y-2">
-                      {stage.realWorldProjects.map((project, idx) => (
+                      {stage?.realWorldProjects?.map((project, idx) => (
                         <li key={idx} className="flex items-start gap-2">
                           <div className="h-2 w-2 rounded-full bg-blue-400 mt-2" />
                           <span className="text-blue-700">{project}</span>
@@ -140,7 +282,7 @@ const StudentRoadMap = ({ setTree }) => {
                       Learning Resources
                     </h3>
                     <ul className="space-y-2">
-                      {stage.resources.map((resource, idx) => (
+                      {stage?.resources?.map((resource, idx) => (
                         <li key={idx} className="flex items-start gap-2">
                           <div className="h-2 w-2 rounded-full bg-blue-400 mt-2" />
                           <span className="text-blue-700">{resource}</span>
@@ -157,7 +299,7 @@ const StudentRoadMap = ({ setTree }) => {
                       Required Skills
                     </h3>
                     <div className="flex flex-wrap gap-2">
-                      {stage.skillsRequired.map((skill, idx) => (
+                      {stage?.skillsRequired?.map((skill, idx) => (
                         <Badge
                           key={idx}
                           className="bg-white text-blue-700 border border-blue-200"

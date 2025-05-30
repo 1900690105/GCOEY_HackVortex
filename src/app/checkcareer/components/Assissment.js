@@ -15,7 +15,6 @@ const Assisment = ({
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
-  const as = 1;
 
   const handleOptionSelect = (questionIndex, option) => {
     setAnswers((prev) => ({
@@ -37,8 +36,7 @@ const Assisment = ({
       localStorage.setItem(`assessment_${assessment}`, JSON.stringify(json));
       setAssessment((prev) => prev + 1);
       setShow(false);
-      localStorage.setItem("assessment", Number(assessment) + as);
-      window.location.reload();
+      localStorage.setItem("assessment", assessment + 1);
     } catch (error) {
       console.error(error);
     } finally {

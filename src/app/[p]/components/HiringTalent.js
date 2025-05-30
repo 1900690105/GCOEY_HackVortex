@@ -1,4 +1,3 @@
-// components/JobPostingForm.jsx
 "use client";
 
 import { useState } from "react";

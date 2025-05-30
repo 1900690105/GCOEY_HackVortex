@@ -13,6 +13,8 @@ import service from "../../../../config/service";
 
 function PreviewCourse({ activeStep, handleBack, content }) {
   const [loading, setLoading] = useState(false);
+  const formData = JSON.parse(localStorage.getItem("formData"));
+  const language = formData.video_language || "hindi";
 
   const StartChapter = async () => {
     const topicName = localStorage.getItem("topicName");
@@ -29,7 +31,7 @@ function PreviewCourse({ activeStep, handleBack, content }) {
           const responseText = await result.response.text();
           console.log("Response Text: ", responseText);
           const videoResponse = await service.getVideos(
-            `${topicName}+${chapterName.chapterName}`
+            `${topicName}+${chapterName.chapterName} + in ${language}`
           );
           const videoId = videoResponse[0]?.id?.videoId;
 
@@ -51,6 +53,7 @@ function PreviewCourse({ activeStep, handleBack, content }) {
       JSON.stringify(combinedResponses)
     );
     window.location.href = "/course/start";
+
     setLoading(false);
   };
 
@@ -62,32 +65,33 @@ function PreviewCourse({ activeStep, handleBack, content }) {
             <h2 className="text-2xl font-bold text-blue-800 mb-4">
               Course Preview
             </h2>
-            {/* <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl shadow-sm border border-blue-100 p-6">
+            <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl shadow-sm border border-blue-100 p-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                
                 <div className="flex items-center space-x-3 bg-blue-50/80 rounded-xl p-4 hover:bg-blue-100/80 transition-all duration-300 transform hover:scale-105">
                   <div className="bg-blue-600 rounded-xl p-2.5 shadow-md">
                     <BookOpen className="h-5 w-5 text-white" />
                   </div>
                   <div>
                     <p className="text-sm text-blue-700 font-medium">Topic</p>
-                    <p className="text-gray-900 font-semibold">Python</p>
+                    <p className="text-gray-900 font-semibold">
+                      {formData.topicName || "Python"}
+                    </p>
                   </div>
                 </div>
 
-                
                 <div className="flex items-center space-x-3 bg-blue-50/80 rounded-xl p-4 hover:bg-blue-100/80 transition-all duration-300 transform hover:scale-105">
                   <div className="bg-blue-600 rounded-xl p-2.5 shadow-md">
                     <GraduationCap className="h-5 w-5 text-white" />
                   </div>
                   <div>
                     <p className="text-sm text-blue-700 font-medium">Level</p>
-                    <p className="text-gray-900 font-semibold">Beginner</p>
+                    <p className="text-gray-900 font-semibold">
+                      {formData.difficulty || "Beginner"}
+                    </p>
                   </div>
                 </div>
 
-                
-                <div className="flex items-center space-x-3 bg-blue-50/80 rounded-xl p-4 hover:bg-blue-100/80 transition-all duration-300 transform hover:scale-105">
+                {/* <div className="flex items-center space-x-3 bg-blue-50/80 rounded-xl p-4 hover:bg-blue-100/80 transition-all duration-300 transform hover:scale-105">
                   <div className="bg-blue-600 rounded-xl p-2.5 shadow-md">
                     <Clock className="h-5 w-5 text-white" />
                   </div>
@@ -97,9 +101,8 @@ function PreviewCourse({ activeStep, handleBack, content }) {
                     </p>
                     <p className="text-gray-900 font-semibold">1 hour</p>
                   </div>
-                </div>
+                </div> */}
 
-                
                 <div className="flex items-center space-x-3 bg-blue-50/80 rounded-xl p-4 hover:bg-blue-100/80 transition-all duration-300 transform hover:scale-105">
                   <div className="bg-blue-600 rounded-xl p-2.5 shadow-md">
                     <Layers className="h-5 w-5 text-white" />
@@ -108,23 +111,25 @@ function PreviewCourse({ activeStep, handleBack, content }) {
                     <p className="text-sm text-blue-700 font-medium">
                       Chapters
                     </p>
-                    <p className="text-gray-900 font-semibold">5</p>
+                    <p className="text-gray-900 font-semibold">
+                      {formData.chapters || "5"}
+                    </p>
                   </div>
                 </div>
 
-                
                 <div className="flex items-center space-x-3 bg-blue-50/80 rounded-xl p-4 hover:bg-blue-100/80 transition-all duration-300 transform hover:scale-105">
-                  <div className="bg-blue-600 rounded-xl p-2.5 shadow-md">
-                  </div>
+                  <div className="bg-blue-600 rounded-xl p-2.5 shadow-md"></div>
                   <div>
                     <p className="text-sm text-blue-700 font-medium">
                       Category
                     </p>
-                    <p className="text-gray-900 font-semibold">Programming</p>
+                    <p className="text-gray-900 font-semibold">
+                      {formData.category || "Programming"}
+                    </p>
                   </div>
                 </div>
               </div>
-            </div> */}
+            </div>
           </CardHeader>
 
           <CardContent className="space-y-8 pt-6">

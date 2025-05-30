@@ -35,7 +35,7 @@ const ToolsCompanyUse = () => {
 
   return (
     <>
-      <div className=" min-h-screen bg-gradient-to-br from-blue-400 to-indigo-50 ">
+      <div className=" min-h-screen bg-gradient-to-br from-blue-400 to-indigo-50">
         <div className="flex justify-center items-center">
           <div className="w-full max-w-xl p-8">
             <form
