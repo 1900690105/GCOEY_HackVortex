@@ -131,6 +131,9 @@ The job market today is plagued by a widening skill gap. Over 20 lakh B.Tech gra
 
 📊 [Project Presentation](https://www.canva.com/design/DAGo6LxfqM8/iUaW-s7JaLIstr5S6ygzsA/edit?utm_content=DAGo6LxfqM8&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
+![home](https://github.com/1900690105/GCOEY_HackVortex/blob/main/public/project_screenshots/screenshot%20(5).png)
+
+
 ---
 
 ## 💭 Thoughts of Team
