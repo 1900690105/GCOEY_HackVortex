@@ -149,7 +149,7 @@ Help create a future-ready workforce driven by passion, skills, and purpose
 
 Hackathons like HackVortex allow us to bring real change with real technology. We're proud of what we’ve built — and this is just the beginning. 🚀
 
-"Don’t just get placed. Get prepared. Get empowered."
+> _ "Don’t just get placed. Get prepared. Get empowered......"_
 
 ---
 > Built with ❤️ by Team GCOEY for HackVortex 2025 
