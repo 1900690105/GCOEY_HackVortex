@@ -126,5 +126,31 @@ The job market today is plagued by a widening skill gap. Over 20 lakh B.Tech gra
 
 ---
 
-> Built with ❤️ by Team GCOEY for HackVortex 2025  
+## 🔗 Demo & Resources
+🔗 [Demo Video](https://myprojectdemo.com)
+
+📊 [Project Presentation](https://www.canva.com/design/DAGo6LxfqM8/iUaW-s7JaLIstr5S6ygzsA/edit?utm_content=DAGo6LxfqM8&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+
+---
+
+## 💭 Thoughts of Team
+
 > _"A degree ≠ a job, but with the right skills and direction, it can be."_
+
+At Team GCOEY, we believe that every student deserves a fair shot at success, regardless of their background or college tier. Our goal is to bridge the gap between academic learning and industry expectations using the power of AI and personalized education.
+
+We built this platform to:
+
+Empower students to discover their true potential
+
+Provide tools that make job preparation smarter and more accessible
+
+Help create a future-ready workforce driven by passion, skills, and purpose
+
+Hackathons like HackVortex allow us to bring real change with real technology. We're proud of what we’ve built — and this is just the beginning. 🚀
+
+"Don’t just get placed. Get prepared. Get empowered."
+
+---
+> Built with ❤️ by Team GCOEY for HackVortex 2025 
+---
